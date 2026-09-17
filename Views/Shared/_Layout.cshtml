@@ -1,0 +1,136 @@
+﻿@using System.Globalization
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? "Glanz & Pflege") - Berlin Car Detailing</title>
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Professionelle Fahrzeugpflege, Detailing und Autowäsche in Berlin.")" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="flex flex-col min-h-full bg-slate-50 text-slate-900 antialiased font-sans">
+    <header class="sticky top-0 z-50 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <a href="/" class="flex items-center gap-3 group">
+                        <div class="w-11 h-11 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-600/30 group-hover:scale-105 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xl font-extrabold tracking-tight text-white group-hover:text-brand-300 transition-colors">BERLIN CAR CARE</span>
+                            <span class="text-xs uppercase tracking-widest text-slate-400 font-medium">Cosmetics & Detailing</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <a href="/" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Home</a>
+                    <a href="/services" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Services</a>
+                    <a href="/gallery" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Gallery</a>
+                    <a href="/about" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">About</a>
+                    <a href="/faq" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">FAQ</a>
+                    <a href="/contact" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Contact</a>
+                </div>
+
+                <div class="hidden sm:flex items-center gap-3">
+                    <div class="flex items-center bg-slate-800/80 rounded-lg p-1 border border-slate-700/60 text-xs font-semibold">
+                        <a href="?culture=de" class="px-2.5 py-1 rounded text-white bg-brand-600 shadow-sm">DE</a>
+                        <a href="?culture=en" class="px-2.5 py-1 rounded text-slate-300 hover:text-white transition-colors">EN</a>
+                    </div>
+                    <a href="/contact" class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-600/20 transition-all">
+                        Termin anfragen
+                    </a>
+                </div>
+
+                <div class="flex md:hidden items-center gap-2">
+                    <button id="mobileMenuBtn" type="button" aria-label="Toggle menu" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden md:hidden border-t border-slate-800 py-4 px-2 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Home</a>
+                <a href="/services" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Services</a>
+                <a href="/gallery" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Gallery</a>
+                <a href="/about" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">About</a>
+                <a href="/faq" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">FAQ</a>
+                <a href="/contact" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Contact</a>
+                <div class="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between px-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <a href="?culture=de" class="px-2.5 py-1 rounded bg-brand-600 text-white font-semibold">DE</a>
+                        <a href="?culture=en" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-medium">EN</a>
+                    </div>
+                    <a href="/contact" class="px-4 py-1.5 text-sm font-semibold rounded-lg text-white bg-brand-600">
+                        Kontakt
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-grow">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-navy-950 text-slate-400 border-t border-slate-800 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="space-y-4 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <span class="text-lg font-bold text-white tracking-tight">BERLIN CAR CARE</span>
+                    </div>
+                    <p class="text-slate-400 max-w-md text-sm leading-relaxed">
+                        Ihre Experten für professionelle Fahrzeugaufbereitung, Tiefenreinigung, Lackpolitur und Detailing im Herzen von Berlin. Höchste Qualität und Liebe zum Detail.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-3 tracking-wide text-xs uppercase">Navigation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/services" class="hover:text-white transition-colors">Dienstleistungen</a></li>
+                        <li><a href="/gallery" class="hover:text-white transition-colors">Vorher / Nachher Galerie</a></li>
+                        <li><a href="/about" class="hover:text-white transition-colors">Über uns</a></li>
+                        <li><a href="/contact" class="hover:text-white transition-colors">Kontakt & Anfahrt</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-3 tracking-wide text-xs uppercase">Rechtliches</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/impressum" class="hover:text-white transition-colors">Impressum</a></li>
+                        <li><a href="/privacy" class="hover:text-white transition-colors">Datenschutz</a></li>
+                        <li><a href="/admin/login" class="text-slate-600 hover:text-slate-400 text-xs transition-colors">Admin Portal</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/80 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
+                <p>&copy; @DateTime.UtcNow.Year Berlin Car Care. Alle Rechte vorbehalten.</p>
+                <p class="mt-2 sm:mt-0">Berlin, Deutschland</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
