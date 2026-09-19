@@ -1,7 +1,13 @@
-﻿using CarWashWebsite.Data;
+using CarWashWebsite.Data;
 using CarWashWebsite.Data.Entities;
+using CarWashWebsite.Infrastructure;
+using CarWashWebsite.Services.Implementations;
+using CarWashWebsite.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace CarWashWebsite.Extensions;
 
@@ -47,9 +53,34 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddCustomBusinessServices(this IServiceCollection services)
+    {
+        services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IServiceService, ServiceService>();
+        services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<IContentService, ContentService>();
+        services.AddScoped<ISeoService, SeoService>();
+        return services;
+    }
+
     public static IServiceCollection AddCustomLocalization(this IServiceCollection services)
     {
         services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+        var supportedCultures = new[]
+        {
+            new CultureInfo("de"),
+            new CultureInfo("en")
+        };
+
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            options.DefaultRequestCulture = new RequestCulture("de");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+            options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider { Options = options });
+        });
+
         return services;
     }
 }

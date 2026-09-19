@@ -1,0 +1,39 @@
+﻿@{
+    var culture = (string?)ViewContext.RouteData.Values["culture"] ?? "de";
+    var isEn = culture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = "Impressum";
+}
+
+<div class="bg-navy-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Impressum</h1>
+        <p class="mt-2 text-slate-300 text-sm">Angaben gemäß § 5 TMG / Legal Notice</p>
+    </div>
+</div>
+
+<div class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-slate text-sm leading-relaxed space-y-6">
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">Diensteanbieter</h2>
+            <p class="text-slate-600">
+                Berlin Car Care & Detailing Studio GmbH<br />
+                Kurfürstendamm 120<br />
+                10711 Berlin, Deutschland
+            </p>
+        </div>
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">Kontakt</h2>
+            <p class="text-slate-600">
+                Telefon: +49 30 12345678<br />
+                E-Mail: info@berlincarcare.de<br />
+                Website: www.berlincarcare.de
+            </p>
+        </div>
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">Umsatzsteuer-ID</h2>
+            <p class="text-slate-600">
+                Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE 987654321
+            </p>
+        </div>
+    </div>
+</div>

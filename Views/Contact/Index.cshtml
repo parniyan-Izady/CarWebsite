@@ -1,0 +1,186 @@
+@model CarWashWebsite.ViewModels.Public.ContactFormViewModel
+@{
+    var culture = (string?)ViewData["CurrentCulture"] ?? "de";
+    var isEn = culture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    var settings = (Dictionary<string, string>?)ViewData["Settings"] ?? new();
+    
+    var phone = settings.GetValueOrDefault("Phone", "+49 30 12345678");
+    var email = settings.GetValueOrDefault("Email", "info@berlincarcare.de");
+    var address = settings.GetValueOrDefault("Address", "Kurfürstendamm 120, 10711 Berlin");
+    var hours = settings.GetValueOrDefault("OpeningHours", "Mo - Sa: 08:00 - 18:00 Uhr");
+
+    ViewData["Title"] = isEn ? "Contact & Service Request" : "Kontakt & Terminanfrage";
+}
+
+<!-- Hero Band -->
+<section class="bg-navy-900 text-white py-16 lg:py-20 border-b border-navy-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-800 text-brand-400 text-xs font-semibold uppercase tracking-wider mb-4 border border-navy-700">
+                @(isEn ? "Get In Touch" : "Kontaktieren Sie uns")
+            </span>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+                @(isEn ? "Contact Us & Book an Appointment" : "Kontakt & Terminanfrage")
+            </h1>
+            <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+                @(isEn ? "Get in touch for questions, price quotes, or to secure a time slot for your vehicle." : "Schreiben Sie uns für Terminanfragen, Preisauskünfte oder eine unverbindliche Beratung.")
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Grid Section -->
+<section class="py-16 lg:py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            <!-- Form Left (7 columns on lg+) -->
+            <div class="lg:col-span-7">
+                <div class="card !p-8 sm:!p-10 shadow-sm">
+                    @if (Model.IsSuccess)
+                    {
+                        <div class="p-6 sm:p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold text-xl text-emerald-900">@(isEn ? "Thank you for reaching out!" : "Vielen Dank für Ihre Nachricht!")</h3>
+                            </div>
+                            <p class="text-emerald-800 text-sm sm:text-base leading-relaxed">
+                                @(isEn ? "We have safely received your inquiry and will contact you promptly." : "Wir haben Ihre Nachricht erhalten und werden uns schnellstmöglich bei Ihnen melden.")
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-bold text-slate-900">@(isEn ? "Send Us a Message" : "Nachricht senden")</h2>
+                            <p class="text-slate-600 text-sm mt-1">@(isEn ? "Fill in the form below and we will respond within 24 hours." : "Füllen Sie das Formular aus und wir melden uns innerhalb von 24 Stunden.")</p>
+                        </div>
+
+                        <form asp-controller="Contact" asp-action="Index" method="post" class="space-y-6">
+                            @Html.AntiForgeryToken()
+                            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 text-red-700 text-sm border border-red-200"></div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label asp-for="Name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                        @(isEn ? "Your Name" : "Ihr Name") <span class="text-red-500">*</span>
+                                    </label>
+                                    <input asp-for="Name" required class="input-field" placeholder="@(isEn ? "e.g. John Doe" : "z. B. Max Mustermann")" />
+                                    <span asp-validation-for="Name" class="text-red-500 text-xs mt-1 block"></span>
+                                </div>
+                                <div>
+                                    <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                        @(isEn ? "Email Address" : "E-Mail-Adresse") <span class="text-red-500">*</span>
+                                    </label>
+                                    <input asp-for="Email" type="email" required class="input-field" placeholder="name@example.de" />
+                                    <span asp-validation-for="Email" class="text-red-500 text-xs mt-1 block"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label asp-for="Phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                        @(isEn ? "Phone (Optional)" : "Telefon (Optional)")
+                                    </label>
+                                    <input asp-for="Phone" type="tel" class="input-field" placeholder="+49 170 1234567" />
+                                </div>
+                                <div>
+                                    <label asp-for="Subject" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                        @(isEn ? "Subject / Service" : "Betreff / Gewünschte Leistung") <span class="text-red-500">*</span>
+                                    </label>
+                                    <input asp-for="Subject" required class="input-field" placeholder="@(isEn ? "e.g. Car Detailing Booking" : "z. B. Fahrzeugaufbereitung")" />
+                                    <span asp-validation-for="Subject" class="text-red-500 text-xs mt-1 block"></span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label asp-for="Message" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                    @(isEn ? "Your Message / Details on Vehicle" : "Ihre Nachricht / Details zum Fahrzeug") <span class="text-red-500">*</span>
+                                </label>
+                                <textarea asp-for="Message" rows="5" required class="input-field" placeholder="@(isEn ? "Vehicle model, year, and requested treatment or schedule preferences..." : "Fahrzeugmodell, Baujahr und gewünschte Pflege oder Terminvorschläge...")"></textarea>
+                                <span asp-validation-for="Message" class="text-red-500 text-xs mt-1 block"></span>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn-primary w-full sm:w-auto">
+                                    @(isEn ? "Send Message" : "Nachricht absenden")
+                                </button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <!-- Studio Info Right (5 columns on lg+) -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="card !p-8 shadow-sm">
+                    <h2 class="text-xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">
+                        @(isEn ? "Berlin Studio Information" : "Standort Berlin")
+                    </h2>
+
+                    <div class="space-y-6 text-sm">
+                        <!-- Address -->
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                @(isEn ? "Address" : "Adresse")
+                            </span>
+                            <p class="text-slate-900 font-semibold text-base">@address</p>
+                            <a href="https://maps.google.com/?q=@Uri.EscapeDataString(address)" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-brand-600 hover:text-brand-700 font-semibold text-xs mt-2 transition-colors">
+                                <span>@(isEn ? "Get Directions on Google Maps" : "Route in Google Maps öffnen")</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                @(isEn ? "Telephone" : "Telefon")
+                            </span>
+                            <a href="tel:@phone" class="text-brand-600 font-bold text-base hover:underline">
+                                @phone
+                            </a>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                @(isEn ? "Email" : "E-Mail")
+                            </span>
+                            <a href="mailto:@email" class="text-brand-600 font-bold text-base hover:underline">
+                                @email
+                            </a>
+                        </div>
+
+                        <!-- Opening Hours -->
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                @(isEn ? "Opening Hours" : "Öffnungszeiten")
+                            </span>
+                            <p class="text-slate-900 font-semibold text-base">@hours</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assistance Card -->
+                <div class="rounded-2xl bg-navy-900 text-white p-6 border border-navy-800 shadow-md">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600/30 text-brand-400 flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">@(isEn ? "Need Fast Service?" : "Dringende Terminanfrage?")</h3>
+                            <p class="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
+                                @(isEn ? "Call us directly during studio hours for instant schedule availability." : "Rufen Sie uns während der Öffnungszeiten an, um kurzfristige Termine abzustimmen.")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

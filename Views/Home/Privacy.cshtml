@@ -1,6 +1,35 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    var culture = (string?)ViewContext.RouteData.Values["culture"] ?? "de";
+    var isEn = culture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = isEn ? "Privacy Policy (Datenschutzerklärung)" : "Datenschutzerklärung";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="bg-navy-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">@(isEn ? "Privacy Policy" : "Datenschutzerklärung")</h1>
+        <p class="mt-2 text-slate-300 text-sm">DSGVO / GDPR Compliance</p>
+    </div>
+</div>
+
+<div class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-slate text-sm leading-relaxed space-y-6 text-slate-600">
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">1. Datenschutz auf einen Blick</h2>
+            <p>
+                Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+            </p>
+        </div>
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">2. Datenerfassung auf dieser Website</h2>
+            <p>
+                Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Wenn Sie unser Kontaktformular nutzen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.
+            </p>
+        </div>
+        <div>
+            <h2 class="text-base font-bold text-slate-900 mb-2">3. Ihre Rechte</h2>
+            <p>
+                Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen.
+            </p>
+        </div>
+    </div>
+</div>

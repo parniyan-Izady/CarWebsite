@@ -1,0 +1,28 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Access Denied";
+}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Denied - Berlin Car Care</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="h-full flex items-center justify-center p-4">
+    <div class="max-w-md w-full text-center">
+        <div class="inline-flex w-16 h-16 rounded-2xl bg-red-500/20 text-red-500 items-center justify-center font-black text-2xl shadow-lg mb-6">
+            ✕
+        </div>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">Access Denied</h1>
+        <p class="text-slate-400 text-sm mb-6">You do not have permission to access the administrative portal.</p>
+        <a href="/Admin/Account/Login" class="inline-flex items-center justify-center px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-lg shadow-brand-600/25 transition-all text-sm">
+            Back to Login
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+@model CarWashWebsite.ViewModels.Admin.MediaLibraryViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Media Library";
+}
+
+<div class="space-y-6">
+    <!-- Header & Storage Counter -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Media Library</h2>
+            <p class="text-slate-500 text-sm mt-1">Manage uploaded images, webp assets, and thumbnails.</p>
+        </div>
+
+        <!-- Upload Form inline -->
+        <form asp-area="Admin" asp-controller="Media" asp-action="Upload" method="post" enctype="multipart/form-data" class="flex flex-wrap items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+            @Html.AntiForgeryToken()
+            <select name="folder" class="input-field !py-1.5 !px-3 !text-xs !w-auto">
+                <option value="general">general</option>
+                <option value="services">services</option>
+                <option value="gallery">gallery</option>
+                <option value="branding">branding</option>
+            </select>
+            <input type="file" name="file" accept="image/*" required class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:bg-brand-50 file:text-brand-700 cursor-pointer" />
+            <button type="submit" class="btn-primary !py-1.5 !px-3 !text-xs flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                <span>Upload</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Folder Filter Pills -->
+    <div class="flex flex-wrap items-center gap-2">
+        <a href="/Admin/Media?folder=all" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors @(Model.CurrentFolder == "all" ? "bg-brand-600 text-white shadow-sm" : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200")">
+            All Folders (@Model.Files.Count)
+        </a>
+        @foreach (var f in Model.Folders)
+        {
+            <a href="/Admin/Media?folder=@f" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors @(Model.CurrentFolder == f ? "bg-brand-600 text-white shadow-sm" : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200")">
+                @f
+            </a>
+        }
+    </div>
+
+    <!-- Media Grid -->
+    @if (!Model.Files.Any())
+    {
+        <div class="card text-center !py-16">
+            <h3 class="text-lg font-bold text-slate-800">No media assets in this folder</h3>
+            <p class="text-slate-500 text-sm mt-1">Upload images using the form above to populate your media library.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            @foreach (var item in Model.Files)
+            {
+                <div class="card !p-2 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between group">
+                    <div class="relative aspect-square rounded-lg overflow-hidden bg-slate-100 mb-2">
+                        <img src="@item.ThumbnailPath" alt="@item.FileName" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" />
+                        <span class="absolute top-1 left-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded backdrop-blur-sm">@item.Folder</span>
+                    </div>
+
+                    <div class="space-y-1 px-1">
+                        <div class="text-[11px] font-bold text-slate-800 truncate" title="@item.FileName">@item.FileName</div>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400">
+                            <span>@item.FileSizeFormatted</span>
+                            <span>@item.CreatedAt.ToString("MM/dd/yy")</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <button type="button" onclick="navigator.clipboard.writeText('@item.RelativePath'); alert('Copied path: @item.RelativePath');" class="text-[10px] font-bold text-brand-600 hover:text-brand-800 transition-colors" title="Copy relative path">
+                            Copy Link
+                        </button>
+
+                        <form asp-area="Admin" asp-controller="Media" asp-action="Delete" method="post" onsubmit="return confirm('Delete this image permanently?');" class="inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="relativePath" value="@item.RelativePath" />
+                            <input type="hidden" name="folder" value="@Model.CurrentFolder" />
+                            <button type="submit" class="text-[10px] font-bold text-red-500 hover:text-red-700 transition-colors" title="Delete">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

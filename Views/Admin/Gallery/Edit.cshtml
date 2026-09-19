@@ -1,0 +1,99 @@
+@using CarWashWebsite.Data.Entities
+@model CarWashWebsite.ViewModels.Admin.GalleryFormViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Transformation Item";
+}
+
+<div class="max-w-3xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Gallery" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to Gallery
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">Edit Before &amp; After Transformation</h2>
+
+        <form asp-area="Admin" asp-controller="Gallery" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="space-y-6">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExistingBeforeImagePath" />
+            <input type="hidden" asp-for="ExistingAfterImagePath" />
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 text-red-700 text-sm border border-red-200"></div>
+
+            <!-- Current Images & Replacement -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Before Image</label>
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-3 border border-slate-200 bg-white">
+                        <img src="@Model.ExistingBeforeImagePath" alt="Current Before" class="w-full h-full object-cover" />
+                    </div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Replace Before Image (optional)</label>
+                    <input asp-for="BeforeImageFile" type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer" />
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">After Image</label>
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-3 border border-slate-200 bg-white">
+                        <img src="@Model.ExistingAfterImagePath" alt="Current After" class="w-full h-full object-cover" />
+                    </div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Replace After Image (optional)</label>
+                    <input asp-for="AfterImageFile" type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer" />
+                </div>
+            </div>
+
+            <!-- Titles -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="TitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="TitleDe" class="input-field" required />
+                    <span asp-validation-for="TitleDe" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+                <div>
+                    <label asp-for="TitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="TitleEn" class="input-field" required />
+                    <span asp-validation-for="TitleEn" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+            </div>
+
+            <!-- Descriptions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="DescriptionDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="DescriptionDe" rows="3" class="input-field"></textarea>
+                </div>
+                <div>
+                    <label asp-for="DescriptionEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="DescriptionEn" rows="3" class="input-field"></textarea>
+                </div>
+            </div>
+
+            <!-- Category, Order, Active -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+                <div>
+                    <label asp-for="Category" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <select asp-for="Category" class="input-field" asp-items="Html.GetEnumSelectList<GalleryCategory>()"></select>
+                </div>
+                <div>
+                    <label asp-for="DisplayOrder" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="DisplayOrder" type="number" class="input-field" />
+                </div>
+                <div class="flex items-center pt-6">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input asp-for="IsActive" type="checkbox" class="w-5 h-5 rounded text-brand-600 focus:ring-brand-500" />
+                        <span class="text-sm font-semibold text-slate-700">Display publicly</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+                <a href="/Admin/Gallery" class="btn-secondary !text-slate-700 !border-slate-300 hover:!bg-slate-100 !text-sm !py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary !text-sm !py-2.5">
+                    Update Transformation
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

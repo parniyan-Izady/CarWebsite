@@ -1,0 +1,131 @@
+@model CarWashWebsite.ViewModels.Admin.AboutPageContentViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit About Page Content";
+}
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Pages" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to Pages
+        </a>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Pages" asp-action="About" method="post" class="space-y-8">
+        @Html.AntiForgeryToken()
+
+        <!-- Hero / Header -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Header Section</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="PageTitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="PageTitleDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="PageTitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="PageTitleEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="SubtitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="SubtitleDe" rows="2" class="input-field" required></textarea>
+                </div>
+                <div>
+                    <label asp-for="SubtitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="SubtitleEn" rows="2" class="input-field" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commitment Section with CKEditor 5 -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Quality Commitment &amp; Story</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="CommitmentHeadingDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="CommitmentHeadingDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="CommitmentHeadingEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="CommitmentHeadingEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="BodyDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Main Body (German) - Rich Text</label>
+                <textarea asp-for="BodyDe" class="ckeditor input-field"></textarea>
+            </div>
+
+            <div>
+                <label asp-for="BodyEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Main Body (English) - Rich Text</label>
+                <textarea asp-for="BodyEn" class="ckeditor input-field"></textarea>
+            </div>
+        </div>
+
+        <!-- Highlights & Feature Cards -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Feature Highlights</h3>
+
+            <!-- Feature 1 -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Feature 1</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Title (DE)</label>
+                        <input asp-for="Feature1TitleDe" class="input-field" required />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Title (EN)</label>
+                        <input asp-for="Feature1TitleEn" class="input-field" required />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Description (DE)</label>
+                        <textarea asp-for="Feature1DescDe" rows="2" class="input-field" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Description (EN)</label>
+                        <textarea asp-for="Feature1DescEn" rows="2" class="input-field" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Feature 2</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Title (DE)</label>
+                        <input asp-for="Feature2TitleDe" class="input-field" required />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Title (EN)</label>
+                        <input asp-for="Feature2TitleEn" class="input-field" required />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Description (DE)</label>
+                        <textarea asp-for="Feature2DescDe" rows="2" class="input-field" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Description (EN)</label>
+                        <textarea asp-for="Feature2DescEn" rows="2" class="input-field" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <button type="submit" class="btn-primary !px-8 !py-3">
+                Save About Page Content
+            </button>
+        </div>
+    </form>
+</div>

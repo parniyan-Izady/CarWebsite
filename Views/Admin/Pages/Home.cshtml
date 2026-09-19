@@ -1,0 +1,130 @@
+@model CarWashWebsite.ViewModels.Admin.HomePageContentViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Home Page Content";
+}
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Pages" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to Pages
+        </a>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Pages" asp-action="Home" method="post" class="space-y-8">
+        @Html.AntiForgeryToken()
+
+        <!-- Hero Section -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Hero Section</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="HeroTitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="HeroTitleDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="HeroTitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="HeroTitleEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="HeroSubtitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="HeroSubtitleDe" rows="3" class="input-field" required></textarea>
+                </div>
+                <div>
+                    <label asp-for="HeroSubtitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="HeroSubtitleEn" rows="3" class="input-field" required></textarea>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+                <div>
+                    <label asp-for="HeroCtaTextDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="HeroCtaTextDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="HeroCtaTextEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="HeroCtaTextEn" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="HeroCtaLink" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="HeroCtaLink" class="input-field" required />
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Why Choose Us Section</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="WhyChooseUsTitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="WhyChooseUsTitleDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="WhyChooseUsTitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="WhyChooseUsTitleEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="WhyChooseUsDescDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="WhyChooseUsDescDe" rows="3" class="input-field" required></textarea>
+                </div>
+                <div>
+                    <label asp-for="WhyChooseUsDescEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="WhyChooseUsDescEn" rows="3" class="input-field" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Bottom Call to Action Banner</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="BottomCtaTitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BottomCtaTitleDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="BottomCtaTitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BottomCtaTitleEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="BottomCtaSubtitleDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="BottomCtaSubtitleDe" rows="3" class="input-field" required></textarea>
+                </div>
+                <div>
+                    <label asp-for="BottomCtaSubtitleEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <textarea asp-for="BottomCtaSubtitleEn" rows="3" class="input-field" required></textarea>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="BottomCtaButtonDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BottomCtaButtonDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="BottomCtaButtonEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BottomCtaButtonEn" class="input-field" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <button type="submit" class="btn-primary !px-8 !py-3">
+                Save Home Page Content
+            </button>
+        </div>
+    </form>
+</div>

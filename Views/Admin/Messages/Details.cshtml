@@ -1,0 +1,69 @@
+@model CarWashWebsite.Data.Entities.ContactMessage
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = $"Inquiry: {Model.Subject}";
+}
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Back & Action Bar -->
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Messages" class="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            <span>&larr; Back to Inbox</span>
+        </a>
+
+        <div class="flex items-center gap-3">
+            <a href="mailto:@Model.Email?subject=Re: @Uri.EscapeDataString(Model.Subject)" class="btn-primary !py-2 !px-4 !text-xs flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>Reply via Email</span>
+            </a>
+
+            <form asp-area="Admin" asp-controller="Messages" asp-action="ToggleArchive" asp-route-id="@Model.Id" method="post" class="inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-colors">
+                    @(Model.IsArchived ? "Restore to Inbox" : "Archive Message")
+                </button>
+            </form>
+
+            <form asp-area="Admin" asp-controller="Messages" asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Delete this message permanently?');" class="inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="px-3 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold transition-colors">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card shadow-sm space-y-6">
+        <!-- Header -->
+        <div class="border-b border-slate-100 pb-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <h1 class="text-2xl font-bold text-slate-900">@Model.Subject</h1>
+                <span class="text-xs text-slate-400">Received on @Model.CreatedAt.ToString("f")</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-sm">
+                <div>
+                    <span class="block text-xs uppercase font-bold text-slate-400">Customer Name</span>
+                    <span class="font-semibold text-slate-900 mt-0.5 block">@Model.Name</span>
+                </div>
+                <div>
+                    <span class="block text-xs uppercase font-bold text-slate-400">Email Address</span>
+                    <a href="mailto:@Model.Email" class="font-semibold text-brand-600 hover:underline mt-0.5 block">@Model.Email</a>
+                </div>
+                <div>
+                    <span class="block text-xs uppercase font-bold text-slate-400">Phone Number</span>
+                    <span class="font-semibold text-slate-900 mt-0.5 block">@(string.IsNullOrEmpty(Model.Phone) ? "Not provided" : Model.Phone)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div>
+            <span class="block text-xs uppercase font-bold text-slate-400 mb-2">Message Content</span>
+            <div class="p-6 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm leading-relaxed whitespace-pre-line font-mono">
+                @Model.Message
+            </div>
+        </div>
+    </div>
+</div>

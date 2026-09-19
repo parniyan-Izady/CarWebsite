@@ -1,4 +1,4 @@
-﻿using CarWashWebsite.Data.Entities;
+using CarWashWebsite.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +17,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
     public DbSet<SiteSetting> SiteSettings => Set<SiteSetting>();
     public DbSet<PageContent> PageContents => Set<PageContent>();
+    public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        // BlogPost Slugs and Indexes
+        builder.Entity<BlogPost>(entity =>
+        {
+            entity.HasIndex(b => b.SlugDe).IsUnique();
+            entity.HasIndex(b => b.SlugEn).IsUnique();
+            entity.HasIndex(b => b.IsPublished);
+            entity.HasIndex(b => b.Category);
+            entity.HasIndex(b => b.PublishedAt);
+        });
 
         // Service SEO Slugs uniqueness & indexing
         builder.Entity<Service>(entity =>

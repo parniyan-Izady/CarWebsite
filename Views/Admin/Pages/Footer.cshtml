@@ -1,0 +1,48 @@
+@model CarWashWebsite.ViewModels.Admin.FooterContentViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Footer Content";
+}
+
+<div class="max-w-3xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Pages" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to Pages
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">Global Footer Text &amp; Copyright</h2>
+
+        <form asp-area="Admin" asp-controller="Pages" asp-action="Footer" method="post" class="space-y-6">
+            @Html.AntiForgeryToken()
+
+            <div>
+                <label asp-for="TaglineDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="TaglineDe" rows="3" class="input-field" required></textarea>
+            </div>
+
+            <div>
+                <label asp-for="TaglineEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="TaglineEn" rows="3" class="input-field" required></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                    <label asp-for="CopyrightDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="CopyrightDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="CopyrightEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="CopyrightEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-end">
+                <button type="submit" class="btn-primary !px-8 !py-2.5">
+                    Save Footer Content
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

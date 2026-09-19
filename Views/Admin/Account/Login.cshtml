@@ -1,0 +1,69 @@
+﻿@model CarWashWebsite.ViewModels.Admin.AdminLoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Admin Login";
+}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Berlin Car Care</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="h-full flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <!-- Logo & Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex w-14 h-14 rounded-2xl bg-brand-600 items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-600/30 mb-4">
+                BC
+            </div>
+            <h1 class="text-2xl font-extrabold text-white tracking-tight">Berlin Car Care</h1>
+            <p class="text-slate-400 text-sm mt-1">Management Portal Authentication</p>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl p-8 shadow-2xl border border-slate-100">
+            <form asp-area="Admin" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-5">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="p-3.5 rounded-xl bg-red-50 text-red-700 text-sm border border-red-200"></div>
+
+                <div>
+                    <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email Address</label>
+                    <input asp-for="Email" type="email" placeholder="admin@berlincarcare.de" required
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm" />
+                    <span asp-validation-for="Email" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Password</label>
+                    <input asp-for="Password" type="password" placeholder="••••••••" required
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm" />
+                    <span asp-validation-for="Password" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center gap-2 text-slate-600">
+                        <input asp-for="RememberMe" type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500" />
+                        <span>Remember this device</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-lg shadow-brand-600/25 transition-all text-sm">
+                    Sign In to Dashboard
+                </button>
+            </form>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="/" class="text-xs text-slate-400 hover:text-slate-200 transition-colors">
+                &larr; Return to Public Website
+            </a>
+        </div>
+    </div>
+</body>
+</html>

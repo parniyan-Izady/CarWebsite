@@ -1,135 +1,209 @@
-﻿@using System.Globalization
+@using System.Globalization
+@{
+    var culture = (string?)ViewContext.RouteData.Values["culture"] ?? "de";
+    var isEn = culture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    var path = Context.Request.Path.Value ?? "/";
+    
+    // Compute alternate language path
+    string deUrl;
+    string enUrl;
+    if (path.StartsWith("/en", StringComparison.OrdinalIgnoreCase))
+    {
+        deUrl = "/de" + path.Substring(3);
+        enUrl = path;
+    }
+    else if (path.StartsWith("/de", StringComparison.OrdinalIgnoreCase))
+    {
+        deUrl = path;
+        enUrl = "/en" + path.Substring(3);
+    }
+    else
+    {
+        deUrl = "/de" + path;
+        enUrl = "/en" + path;
+    }
+}
 <!DOCTYPE html>
-<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-full">
+<html lang="@culture" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@(ViewData["Title"] ?? "Glanz & Pflege") - Berlin Car Detailing</title>
-    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Professionelle Fahrzeugpflege, Detailing und Autowäsche in Berlin.")" />
+    <title>@(ViewData["Title"] ?? (isEn ? "Professional Car Care & Detailing in Berlin" : "Professionelle Fahrzeugpflege & Detailing in Berlin")) - Berlin Car Care</title>
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? (isEn ? "Expert vehicle detailing, car wash, interior deep cleaning and paint polishing in Berlin." : "Professionelle Fahrzeugaufbereitung, Autowäsche, Innenreinigung und Lackpolitur in Berlin."))" />
+    
+    <!-- SEO Hreflang Tags -->
+    <link rel="alternate" hreflang="de" href="@deUrl" />
+    <link rel="alternate" hreflang="en" href="@enUrl" />
+    <link rel="alternate" hreflang="x-default" href="@deUrl" />
+    <link rel="canonical" href="@(isEn ? enUrl : deUrl)" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @if (ViewData["SchemaJsonLd"] != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(ViewData["SchemaJsonLd"])
+        </script>
+    }
 </head>
 <body class="flex flex-col min-h-full bg-slate-50 text-slate-900 antialiased font-sans">
-    <header class="sticky top-0 z-50 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-navy-900/95 backdrop-blur-md border-b border-navy-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3">
-                    <a href="/" class="flex items-center gap-3 group">
-                        <div class="w-11 h-11 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-600/30 group-hover:scale-105 transition-transform">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Logo Left -->
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="/@culture" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg">
+                        <div class="w-11 h-11 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-600/30 group-hover:scale-105 transition-transform duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <span class="text-xl font-extrabold tracking-tight text-white group-hover:text-brand-300 transition-colors">BERLIN CAR CARE</span>
-                            <span class="text-xs uppercase tracking-widest text-slate-400 font-medium">Cosmetics & Detailing</span>
+                            <span class="text-[11px] uppercase tracking-widest text-slate-400 font-medium">Cosmetics &amp; Detailing</span>
                         </div>
                     </a>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                    <a href="/" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Home</a>
-                    <a href="/services" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Services</a>
-                    <a href="/gallery" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Gallery</a>
-                    <a href="/about" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">About</a>
-                    <a href="/faq" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">FAQ</a>
-                    <a href="/contact" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors">Contact</a>
-                </div>
+                <!-- Desktop Nav Center/Right -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Main Navigation">
+                    <a href="/@culture" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">@(isEn ? "Home" : "Startseite")</a>
+                    <a href="/@culture/services" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">@(isEn ? "Services" : "Dienstleistungen")</a>
+                    <a href="/@culture/gallery" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">@(isEn ? "Gallery" : "Galerie")</a>
+                    <a href="/@culture/about" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">@(isEn ? "About Us" : "Über Uns")</a>
+                    <a href="/@culture/faq" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">FAQ</a>
+                    <a href="/@culture/contact" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 transition-colors">@(isEn ? "Contact" : "Kontakt")</a>
+                </nav>
 
+                <!-- Language Switcher & CTA Right -->
                 <div class="hidden sm:flex items-center gap-3">
-                    <div class="flex items-center bg-slate-800/80 rounded-lg p-1 border border-slate-700/60 text-xs font-semibold">
-                        <a href="?culture=de" class="px-2.5 py-1 rounded text-white bg-brand-600 shadow-sm">DE</a>
-                        <a href="?culture=en" class="px-2.5 py-1 rounded text-slate-300 hover:text-white transition-colors">EN</a>
+                    <div class="flex items-center bg-navy-800 rounded-lg p-1 border border-slate-700/60 text-xs font-semibold" aria-label="Language selector">
+                        <a href="@deUrl" class="px-2.5 py-1 rounded transition-colors @(!isEn ? "text-white bg-brand-600 shadow-sm" : "text-slate-300 hover:text-white")" aria-label="Deutsch">DE</a>
+                        <a href="@enUrl" class="px-2.5 py-1 rounded transition-colors @(isEn ? "text-white bg-brand-600 shadow-sm" : "text-slate-300 hover:text-white")" aria-label="English">EN</a>
                     </div>
-                    <a href="/contact" class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-600/20 transition-all">
-                        Termin anfragen
+                    <a href="/@culture/contact" class="btn-primary !px-4 !py-2 !text-sm !shadow-sm">
+                        @(isEn ? "Request Service" : "Termin anfragen")
                     </a>
                 </div>
 
+                <!-- Mobile Hamburger Button -->
                 <div class="flex md:hidden items-center gap-2">
-                    <button id="mobileMenuBtn" type="button" aria-label="Toggle menu" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="mobileMenuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation menu" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-navy-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
+                        <svg id="hamburgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
             </div>
 
-            <div id="mobileMenu" class="hidden md:hidden border-t border-slate-800 py-4 px-2 space-y-1">
-                <a href="/" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Home</a>
-                <a href="/services" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Services</a>
-                <a href="/gallery" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Gallery</a>
-                <a href="/about" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">About</a>
-                <a href="/faq" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">FAQ</a>
-                <a href="/contact" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Contact</a>
-                <div class="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between px-2">
+            <!-- Mobile Dropdown Navigation -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-navy-800 py-4 px-2 space-y-1">
+                <a href="/@culture" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">@(isEn ? "Home" : "Startseite")</a>
+                <a href="/@culture/services" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">@(isEn ? "Services" : "Dienstleistungen")</a>
+                <a href="/@culture/gallery" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">@(isEn ? "Gallery" : "Galerie")</a>
+                <a href="/@culture/about" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">@(isEn ? "About Us" : "Über Uns")</a>
+                <a href="/@culture/faq" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">FAQ</a>
+                <a href="/@culture/contact" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-navy-800 hover:text-white transition-colors">@(isEn ? "Contact" : "Kontakt")</a>
+                <div class="pt-4 mt-3 border-t border-navy-800 flex items-center justify-between px-2">
                     <div class="flex items-center gap-2 text-sm">
-                        <a href="?culture=de" class="px-2.5 py-1 rounded bg-brand-600 text-white font-semibold">DE</a>
-                        <a href="?culture=en" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-medium">EN</a>
+                        <a href="@deUrl" class="px-3 py-1.5 rounded-lg @(!isEn ? "bg-brand-600 text-white font-semibold shadow" : "bg-navy-800 text-slate-300 font-medium")">DE</a>
+                        <a href="@enUrl" class="px-3 py-1.5 rounded-lg @(isEn ? "bg-brand-600 text-white font-semibold shadow" : "bg-navy-800 text-slate-300 font-medium")">EN</a>
                     </div>
-                    <a href="/contact" class="px-4 py-1.5 text-sm font-semibold rounded-lg text-white bg-brand-600">
-                        Kontakt
+                    <a href="/@culture/contact" class="btn-primary !px-4 !py-2 !text-sm">
+                        @(isEn ? "Book Now" : "Jetzt anfragen")
                     </a>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
+    <!-- Main Content Body -->
     <main role="main" class="flex-grow">
         @RenderBody()
     </main>
 
-    <footer class="bg-navy-950 text-slate-400 border-t border-slate-800 text-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="space-y-4 md:col-span-2">
+    <!-- Footer: 3-column grid on desktop, stacked on mobile -->
+    <footer class="bg-navy-950 text-slate-400 border-t border-navy-800 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
+                <!-- 1. Brand Column with Tagline -->
+                <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-md shadow-brand-600/30">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
-                        <span class="text-lg font-bold text-white tracking-tight">BERLIN CAR CARE</span>
+                        <span class="text-xl font-extrabold text-white tracking-tight">BERLIN CAR CARE</span>
                     </div>
-                    <p class="text-slate-400 max-w-md text-sm leading-relaxed">
-                        Ihre Experten für professionelle Fahrzeugaufbereitung, Tiefenreinigung, Lackpolitur und Detailing im Herzen von Berlin. Höchste Qualität und Liebe zum Detail.
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
+                        @(isEn
+                            ? "Your certified specialists for professional automotive detailing, interior deep cleaning, high-gloss paint polishing, and pre-sale preparation in the center of Berlin."
+                            : "Ihre Experten für professionelle Fahrzeugaufbereitung, Tiefenreinigung, Lackpolitur und Detailing im Herzen von Berlin. Höchste Qualität und Liebe zum Detail.")
                     </p>
                 </div>
+
+                <!-- 2. Navigation Links -->
                 <div>
-                    <h3 class="text-white font-semibold mb-3 tracking-wide text-xs uppercase">Navigation</h3>
-                    <ul class="space-y-2">
-                        <li><a href="/services" class="hover:text-white transition-colors">Dienstleistungen</a></li>
-                        <li><a href="/gallery" class="hover:text-white transition-colors">Vorher / Nachher Galerie</a></li>
-                        <li><a href="/about" class="hover:text-white transition-colors">Über uns</a></li>
-                        <li><a href="/contact" class="hover:text-white transition-colors">Kontakt & Anfahrt</a></li>
+                    <h3 class="text-white font-bold mb-4 tracking-wider text-xs uppercase">@(isEn ? "Navigation" : "Dienstleistungen")</h3>
+                    <ul class="space-y-2.5">
+                        <li><a href="/@culture" class="hover:text-white transition-colors">@(isEn ? "Home" : "Startseite")</a></li>
+                        <li><a href="/@culture/services" class="hover:text-white transition-colors">@(isEn ? "All Services" : "Alle Leistungen")</a></li>
+                        <li><a href="/@culture/gallery" class="hover:text-white transition-colors">@(isEn ? "Before / After Gallery" : "Vorher / Nachher Galerie")</a></li>
+                        <li><a href="/@culture/about" class="hover:text-white transition-colors">@(isEn ? "About Us" : "Über uns")</a></li>
+                        <li><a href="/@culture/faq" class="hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="/@culture/contact" class="hover:text-white transition-colors">@(isEn ? "Contact & Directions" : "Kontakt & Anfahrt")</a></li>
                     </ul>
                 </div>
+
+                <!-- 3. Legal Links -->
                 <div>
-                    <h3 class="text-white font-semibold mb-3 tracking-wide text-xs uppercase">Rechtliches</h3>
-                    <ul class="space-y-2">
-                        <li><a href="/impressum" class="hover:text-white transition-colors">Impressum</a></li>
-                        <li><a href="/privacy" class="hover:text-white transition-colors">Datenschutz</a></li>
-                        <li><a href="/admin/login" class="text-slate-600 hover:text-slate-400 text-xs transition-colors">Admin Portal</a></li>
+                    <h3 class="text-white font-bold mb-4 tracking-wider text-xs uppercase">@(isEn ? "Legal & Administration" : "Rechtliches & Verwaltung")</h3>
+                    <ul class="space-y-2.5">
+                        <li><a href="/@culture/home/impressum" class="hover:text-white transition-colors">Impressum</a></li>
+                        <li><a href="/@culture/home/privacy" class="hover:text-white transition-colors">Datenschutz / Privacy</a></li>
+                        <li><a href="/Admin/Account/Login" class="text-slate-500 hover:text-slate-300 text-xs transition-colors inline-flex items-center gap-1.5 mt-2">
+                            <span>Admin Portal</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-slate-800/80 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
-                <p>&copy; @DateTime.UtcNow.Year Berlin Car Care. Alle Rechte vorbehalten.</p>
-                <p class="mt-2 sm:mt-0">Berlin, Deutschland</p>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-navy-800/80 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+                <p>&copy; @DateTime.UtcNow.Year Berlin Car Care. @(isEn ? "All rights reserved." : "Alle Rechte vorbehalten.")</p>
+                <p class="text-slate-400">Kurfürstendamm 120, 10711 Berlin, Germany</p>
             </div>
         </div>
     </footer>
 
+    <!-- Vanilla JS Mobile Navigation Toggle -->
     <script>
-        const btn = document.getElementById('mobileMenuBtn');
-        const menu = document.getElementById('mobileMenu');
-        if (btn && menu) {
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
-        }
+        (function() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+
+            if (btn && menu) {
+                btn.addEventListener('click', function() {
+                    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', !isExpanded);
+                    menu.classList.toggle('hidden');
+                    if (hamburger && closeIcon) {
+                        hamburger.classList.toggle('hidden');
+                        closeIcon.classList.toggle('hidden');
+                    }
+                });
+            }
+        })();
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,4 +1,4 @@
-﻿using CarWashWebsite.Data.Entities;
+using CarWashWebsite.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -344,5 +344,97 @@ public static class DbInitializer
             await context.FaqItems.AddRangeAsync(faqs);
             await context.SaveChangesAsync();
         }
+
+        // 5. Ensure Module Toggles exist in SiteSettings
+        var moduleKeys = new[] { ("EnableBlog", "true"), ("EnableGallery", "true"), ("EnableFaq", "true") };
+        foreach (var (k, v) in moduleKeys)
+        {
+            if (!await context.SiteSettings.AnyAsync(s => s.Key == k))
+            {
+                await context.SiteSettings.AddAsync(new SiteSetting
+                {
+                    Key = k,
+                    ValueDe = v,
+                    ValueEn = v,
+                    Group = "Modules"
+                });
+            }
+        }
+        await context.SaveChangesAsync();
+
+        // 6. Seed SEO Blog Posts if empty
+        if (!await context.BlogPosts.AnyAsync())
+        {
+            var posts = new List<BlogPost>
+            {
+                new()
+                {
+                    TitleDe = "Autopolitur in Perfektion: Swirls & Hologramme sicher entfernen",
+                    TitleEn = "Car Polishing Mastery: Removing Swirls and Holograms Safely",
+                    SlugDe = "autopolitur-swirls-hologramme-entfernen",
+                    SlugEn = "car-polishing-swirl-marks-removal",
+                    SummaryDe = "Erfahren Sie, wie professionelle Lackaufbereitung feine Kratzer und Hologramme beseitigt und Ihrem Fahrzeug perfekten Tiefenglanz verleiht.",
+                    SummaryEn = "Discover how professional paint correction removes scratches and buffer swirls, restoring flawless mirror reflection to your vehicle.",
+                    ContentDe = "<p>Waschanlagenbürsten und unsachgemäße Handwäschen hinterlassen auf jedem Autolack mit der Zeit feine, kreisrunde Mikrokratzer – sogenannte <strong>Swirl Marks</strong>. Im direkten Sonnenlicht wirken diese wie ein grauer Schleier, der dem Lack Tiefe und Brillanz raubt.</p><h3>Die Ursachen für Lackdefekte</h3><p>Schmutzpartikel wirken bei Berührung wie Schmirgelpapier. Bei einer professionellen mehrstufigen Lackkorrektur messen wir zunächst die Klarlackstärke mit Präzisionsmessgeräten. Anschließend wird in mehreren Polierschritten die oberste, beschädigte Schicht im Mikrometerbereich egalisiert.</p><h3>Vorteile der professionellen Maschinenpolitur</h3><ul><li>Vollständige Beseitigung von Waschkratzern und Hologrammen</li><li>Wiederherstellung des originalen Tiefenglanzes</li><li>Optimale Vorbereitung für langanhaltende Schutzversiegelungen</li></ul><p>Wir bei Berlin Car Care setzen modernste Exzenter- und Rotationspolierer sowie silikonfreie Schleifpasten namhafter deutscher Hersteller ein.</p>",
+                    ContentEn = "<p>Automatic car washes and improper washing techniques inevitably inflict microscopic circular scratches – known as <strong>swirl marks</strong>. Under direct sunlight, they create an unattractive haze that robs the paintwork of its natural depth and clarity.</p><h3>Understanding Paint Defects</h3><p>Dirt particles act like fine sandpaper when wiped across paint. During our multi-stage paint correction, we first measure the clear coat thickness with digital depth gauges. Next, we systematically level the damaged surface by removing only a minute fraction of the clear coat.</p><h3>Key Benefits of Professional Polishing</h3><ul><li>Total eradication of wash swirls and machine holograms</li><li>Restoration of authentic deep mirror gloss</li><li>Essential foundation for ceramic or wax coatings</li></ul><p>At Berlin Car Care, we utilize dual-action rotary polishers paired with silicone-free German compounds for enduring results.</p>",
+                    CoverImagePath = "/uploads/services/polishing.webp",
+                    Category = "PaintCare",
+                    ReadingTimeMinutes = 4,
+                    SeoTitleDe = "Autopolitur Berlin | Swirls & Kratzer entfernen | Berlin Car Care",
+                    SeoTitleEn = "Car Polishing in Berlin | Swirl Removal | Berlin Car Care",
+                    MetaDescriptionDe = "Expertenratgeber zur professionellen Autopolitur in Berlin. Erfahren Sie, wie wir Hologramme und Swirls schonend entfernen.",
+                    MetaDescriptionEn = "Expert guide to professional paint correction in Berlin. Learn how we safely eliminate swirl marks and scratches.",
+                    IsPublished = true,
+                    PublishedAt = DateTime.UtcNow.AddDays(-5),
+                    CreatedAt = DateTime.UtcNow.AddDays(-5)
+                },
+                new()
+                {
+                    TitleDe = "Keramikversiegelung vs. Wachs: Welcher Schutz lohnt sich wirklich?",
+                    TitleEn = "Ceramic Coating vs. Car Wax: Which Protection Truly Pays Off?",
+                    SlugDe = "keramikversiegelung-vs-wachs-vergleich",
+                    SlugEn = "ceramic-coating-vs-wax-comparison",
+                    SummaryDe = "Vergleich zwischen traditionellem Carnaubawachs und moderner Keramikversiegelung in Bezug auf Standzeit, Glanz und Pflegeaufwand.",
+                    SummaryEn = "A detailed comparison between traditional carnauba wax and modern ceramic coatings regarding longevity, gloss, and maintenance.",
+                    ContentDe = "<p>Fahrzeugbesitzer stehen oft vor der Wahl: Traditionelles Naturwachs oder hochmoderne Keramikbeschichtung (SiO2)? Beide Methoden haben klare Vorzüge.</p><h3>Carnaubawachs – Warmer Glanz für Liebhaber</h3><p>Hochwertiges Carnaubawachs erzeugt einen besonders warmen, tiefen Nassglanz. Es ist ideal für Oldtimer oder Schönwetterfahrzeuge, muss jedoch alle 3 bis 6 Monate erneuert werden.</p><h3>Keramikversiegelung – Maximaler Langzeitschutz</h3><p>Eine Keramikversiegelung verbindet sich chemisch mit dem Klarlack. Sie bietet extremen Schutz vor UV-Strahlung, Streusalz, Vogelkot und saurem Regen. Mit einer Standzeit von 2 bis 5 Jahren und extrem hydrophobem Abperleffekt ist sie die wirtschaftlichste Lösung für Alltagsfahrzeuge.</p>",
+                    ContentEn = "<p>Car owners frequently wonder whether traditional carnauba wax or cutting-edge ceramic coating (SiO2) is the best choice for their vehicle. Both offer unique qualities.</p><h3>Carnauba Wax – Warm Radiance for Enthusiasts</h3><p>Natural carnauba wax produces an incomparable warm, deep wet-look shine. It is superb for classic and weekend cars, though requires reapplication every 3 to 6 months.</p><h3>Ceramic Coating – Superior Long-Term Shield</h3><p>Ceramic coatings form a molecular chemical bond with your factory clear coat. They offer exceptional resistance against harsh road salt, tree sap, acid rain, and UV damage, lasting 2 to 5 years.</p>",
+                    CoverImagePath = "/uploads/services/wax.webp",
+                    Category = "Detailing",
+                    ReadingTimeMinutes = 5,
+                    SeoTitleDe = "Keramikversiegelung vs. Wachs im Vergleich | Berlin Car Care",
+                    SeoTitleEn = "Ceramic Coating vs Car Wax Comparison | Berlin Car Care",
+                    MetaDescriptionDe = "Was ist besser für Ihr Auto: Keramikversiegelung oder Wachs? Wir vergleichen Schutzwirkung, Glanz und Kosten.",
+                    MetaDescriptionEn = "Which is better for your car: ceramic coating or wax? We compare longevity, gloss, and overall value.",
+                    IsPublished = true,
+                    PublishedAt = DateTime.UtcNow.AddDays(-2),
+                    CreatedAt = DateTime.UtcNow.AddDays(-2)
+                },
+                new()
+                {
+                    TitleDe = "Lederpflege im Auto: Risse vermeiden und Wert erhalten",
+                    TitleEn = "Car Leather Detailing: Preventing Cracks and Maintaining Value",
+                    SlugDe = "lederpflege-auto-tipps-werterhalt",
+                    SlugEn = "car-leather-care-tips",
+                    SummaryDe = "Richtige Reinigung und Imprägnierung von Autoleder: So bleibt hochwertiges Leder geschmeidig und frei von Flecken.",
+                    SummaryEn = "Proper cleaning and conditioning for automotive leather: keep your upholstery supple, matte, and stain-resistant.",
+                    ContentDe = "<p>Echtes Leder im Fahrzeuginnenraum vermittelt Luxus und Komfort. Doch Sonneneinstrahlung und Abrieb entziehen dem Leder über die Jahre Feuchtigkeit und Weichmacher. Die Folge: Glänzende, speckige Oberflächen und unansehnliche Bruchstellen.</p><h3>Schritt 1: Tiefenreinigung mit pH-neutralen Schaumreinigern</h3><p>Herkömmliche Haushaltsreiniger greifen die Farbschicht des Leders an. Wir nutzen milde Reiniger mit speziellen Reinigungsbürsten, um Schmutz und Schweiß aus den Poren zu heben.</p><h3>Schritt 2: Rückfettung und UV-Schutz</h3><p>Nach der Trocknung wird eine nährende Lederversiegelung aufgetragen, die das Material geschmeidig hält und das ursprüngliche matte Werksfinish wiederherstellt.</p>",
+                    ContentEn = "<p>Genuine leather seats elevate automotive interiors to genuine luxury. Over time, however, heat, sunlight, and everyday friction deplete essential natural oils. The result is an unsightly greasy shine followed by cracking.</p><h3>Step 1: Deep Pore Cleaning</h3><p>Ordinary household cleaners strip the top protective coat. We employ pH-neutral foaming cleansers and soft horsehair brushes to safely dislodge body oils and embedded grime.</p><h3>Step 2: Conditioning and UV Sealing</h3><p>Once dried, we apply specialized conditioners that rehydrate the hide and impart a durable barrier against dye transfer and UV degradation while restoring that desirable matte factory finish.</p>",
+                    CoverImagePath = "/uploads/services/interior.webp",
+                    Category = "Interior",
+                    ReadingTimeMinutes = 3,
+                    SeoTitleDe = "Lederpflege im Auto | Risse & Flecken vermeiden | Berlin Car Care",
+                    SeoTitleEn = "Car Leather Care & Detailing | Berlin Car Care",
+                    MetaDescriptionDe = "Tipps zur professionellen Lederpflege im Auto. Erfahren Sie, wie Sie Leder geschmeidig halten und Risse verhindern.",
+                    MetaDescriptionEn = "Expert tips on automotive leather care. Learn how to maintain matte, supple leather and prevent cracking.",
+                    IsPublished = true,
+                    PublishedAt = DateTime.UtcNow.AddDays(-1),
+                    CreatedAt = DateTime.UtcNow.AddDays(-1)
+                }
+            };
+
+            await context.BlogPosts.AddRangeAsync(posts);
+            await context.SaveChangesAsync();
+        }
     }
 }
+

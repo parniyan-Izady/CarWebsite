@@ -1,0 +1,53 @@
+@model CarWashWebsite.ViewModels.Admin.LegalPagesContentViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Legal Pages (Impressum & Privacy)";
+}
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Pages" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to Pages
+        </a>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Pages" asp-action="Legal" method="post" class="space-y-8">
+        @Html.AntiForgeryToken()
+
+        <!-- Impressum -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Impressum (Legal Notice)</h3>
+
+            <div>
+                <label asp-for="ImpressumDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="ImpressumDe" class="ckeditor input-field"></textarea>
+            </div>
+
+            <div>
+                <label asp-for="ImpressumEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="ImpressumEn" class="ckeditor input-field"></textarea>
+            </div>
+        </div>
+
+        <!-- Privacy Policy -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">Datenschutzerklärung (Privacy Policy)</h3>
+
+            <div>
+                <label asp-for="PrivacyDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="PrivacyDe" class="ckeditor input-field"></textarea>
+            </div>
+
+            <div>
+                <label asp-for="PrivacyEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="PrivacyEn" class="ckeditor input-field"></textarea>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <button type="submit" class="btn-primary !px-8 !py-3">
+                Save Legal Pages
+            </button>
+        </div>
+    </form>
+</div>

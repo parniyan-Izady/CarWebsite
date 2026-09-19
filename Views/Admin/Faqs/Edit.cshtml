@@ -1,0 +1,70 @@
+@model CarWashWebsite.ViewModels.Admin.FaqFormViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit FAQ Item";
+}
+
+<div class="max-w-3xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="/Admin/Faqs" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+            &larr; Back to FAQ List
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">Edit FAQ Question</h2>
+
+        <form asp-area="Admin" asp-controller="Faqs" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-6">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 text-red-700 text-sm border border-red-200"></div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="QuestionDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="QuestionDe" class="input-field" required />
+                    <span asp-validation-for="QuestionDe" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+                <div>
+                    <label asp-for="QuestionEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="QuestionEn" class="input-field" required />
+                    <span asp-validation-for="QuestionEn" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="AnswerDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="AnswerDe" rows="4" class="input-field" required></textarea>
+                <span asp-validation-for="AnswerDe" class="text-red-500 text-xs mt-1 block"></span>
+            </div>
+
+            <div>
+                <label asp-for="AnswerEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                <textarea asp-for="AnswerEn" rows="4" class="input-field" required></textarea>
+                <span asp-validation-for="AnswerEn" class="text-red-500 text-xs mt-1 block"></span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                    <label asp-for="DisplayOrder" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="DisplayOrder" type="number" class="input-field" />
+                </div>
+                <div class="flex items-center pt-6">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input asp-for="IsActive" type="checkbox" class="w-5 h-5 rounded text-brand-600 focus:ring-brand-500" />
+                        <span class="text-sm font-semibold text-slate-700">Display item publicly</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+                <a href="/Admin/Faqs" class="btn-secondary !text-slate-700 !border-slate-300 hover:!bg-slate-100 !text-sm !py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary !text-sm !py-2.5">
+                    Update FAQ Item
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

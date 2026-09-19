@@ -1,35 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Professionelle Fahrzeugaufbereitung in Berlin";
+﻿@using CarWashWebsite.Data.Entities
+@model CarWashWebsite.ViewModels.Public.HomeViewModel
+@{
+    var isEn = Model.CurrentCulture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = isEn ? "Professional Car Care & Detailing in Berlin" : "Professionelle Fahrzeugaufbereitung in Berlin";
 }
 
 <!-- Hero Section -->
-<section class="relative bg-navy-900 text-white overflow-hidden py-20 lg:py-32">
-    <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-900/90 to-navy-950/80 z-10"></div>
+<section class="relative bg-navy-900 text-white overflow-hidden py-24 lg:py-36">
+    <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-900/95 to-navy-950/80 z-10"></div>
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-600/20 text-brand-400 border border-brand-500/30 mb-6">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-600/20 text-brand-400 border border-brand-500/30 mb-6">
                 <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
-                Berlin Car Cosmetics & Detailing Center
+                Berlin Car Cosmetics & Detailing Studio
             </span>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white mb-6">
-                Perfektion in jedem Detail für Ihr Fahrzeug
+                @(isEn ? "Flawless Perfection for Your Automobile in Berlin" : "Perfektion in jedem Detail für Ihr Fahrzeug")
             </h1>
             <p class="text-lg sm:text-xl text-slate-300 mb-8 leading-relaxed">
-                Von der gründlichen Innen- und Außenreinigung über professionelle Lackpolitur bis hin zur exklusiven Fahrzeugaufbereitung vor dem Verkauf in Berlin.
+                @(isEn
+                    ? "From gentle exterior and interior deep cleaning to multi-stage paint correction, ceramic wax, and pre-sale preparation. Premium craftsmanship you can see and feel."
+                    : "Von der gründlichen Innen- und Außenreinigung über professionelle Lackpolitur bis hin zur exklusiven Fahrzeugaufbereitung vor dem Verkauf in Berlin.")
             </p>
             <div class="flex flex-wrap items-center gap-4">
-                <a href="/services" class="px-6 py-3.5 rounded-xl font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-lg shadow-brand-600/30 transition-all text-base">
-                    Unsere Dienstleistungen
+                <a href="/@Model.CurrentCulture/services" class="px-7 py-3.5 rounded-xl font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-lg shadow-brand-600/30 transition-all text-base">
+                    @(isEn ? "Explore Services & Prices" : "Dienstleistungen & Preise")
                 </a>
-                <a href="/contact" class="px-6 py-3.5 rounded-xl font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition-all text-base">
-                    Preisanfrage & Kontakt
+                <a href="/@Model.CurrentCulture/contact" class="px-7 py-3.5 rounded-xl font-semibold text-slate-200 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 transition-all text-base">
+                    @(isEn ? "Inquire / Book Now" : "Preisanfrage & Kontakt")
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Value Proposition Highlights -->
+<!-- Trust Badges -->
 <section class="py-12 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -38,8 +43,8 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">Modernste Reinigungstechnik</h3>
-                    <p class="text-sm text-slate-600">Spezialsauger, Dampfreinigung und materialschonende Profi-Chemikalien.</p>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">@(isEn ? "State-of-the-Art Technology" : "Modernste Reinigungstechnik")</h3>
+                    <p class="text-sm text-slate-600">@(isEn ? "Industrial extraction vacuums, steam sanitization and premium eco-friendly chemicals." : "Spezialsauger, Dampfreinigung und materialschonende Profi-Chemikalien.")</p>
                 </div>
             </div>
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
@@ -47,8 +52,8 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">Schnell & Termintreu</h3>
-                    <p class="text-sm text-slate-600">Schnelle Bearbeitung, zuverlässige Fertigstellung und transparente Konditionen.</p>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">@(isEn ? "Reliable & Punctual" : "Schnell & Termintreu")</h3>
+                    <p class="text-sm text-slate-600">@(isEn ? "Fast turnaround times, fixed appointments and completely transparent pricing." : "Schnelle Bearbeitung, zuverlässige Fertigstellung und transparente Konditionen.")</p>
                 </div>
             </div>
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
@@ -56,10 +61,122 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">Werterhalt & Glanz</h3>
-                    <p class="text-sm text-slate-600">Maximaler Werterhalt vor dem Verkauf oder einfach das Neuwagen-Gefühl genießen.</p>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">@(isEn ? "Value Preservation" : "Werterhalt & Hochglanz")</h3>
+                    <p class="text-sm text-slate-600">@(isEn ? "Substantial increase in resale value or pure joy in driving a fresh, showroom-condition car." : "Maximaler Werterhalt vor dem Verkauf oder einfach das Neuwagen-Gefühl genießen.")</p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Services Grid Section (14 Seeded Services) -->
+<section class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                @(isEn ? "Our Specialized Services" : "Unsere Spezialleistungen")
+            </h2>
+            <p class="mt-4 text-slate-600 text-base">
+                @(isEn
+                    ? "Carefully tailored detailing packages and individual services executed with passion and automotive expertise."
+                    : "Maßgeschneiderte Aufbereitungspakete und Einzelleistungen für höchsten Glanz und Sauberkeit.")
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach (var s in Model.FeaturedServices)
+            {
+                var title = isEn ? s.TitleEn : s.TitleDe;
+                var desc = isEn ? s.DescriptionEn : s.DescriptionDe;
+                var slug = isEn ? s.SlugEn : s.SlugDe;
+
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+                    <div class="p-6 sm:p-7">
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <h3 class="font-bold text-lg text-slate-900 group-hover:text-brand-600 transition-colors">
+                                <a href="/@Model.CurrentCulture/services/@slug">@title</a>
+                            </h3>
+                            <div class="shrink-0">
+                                @if (s.PriceType == PriceType.OnRequest)
+                                {
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">@(isEn ? "On Request" : "Auf Anfrage")</span>
+                                }
+                                else if (s.PriceType == PriceType.StartingFrom)
+                                {
+                                    <span class="text-sm font-extrabold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-lg">ab €@(s.Price?.ToString("N0") ?? "0")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-sm font-extrabold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg">€@(s.Price?.ToString("N0") ?? "0")</span>
+                                }
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+                            @desc
+                        </p>
+                    </div>
+
+                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <a href="/@Model.CurrentCulture/services/@slug" class="text-xs font-bold text-brand-600 hover:text-brand-700 inline-flex items-center gap-1">
+                            @(isEn ? "Details & Booking" : "Details & Buchung") &rarr;
+                        </a>
+                        <span class="text-[11px] font-medium text-slate-400">Berlin Workshop</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- FAQs Section -->
+<section class="py-20 bg-white border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                @(isEn ? "Frequently Asked Questions" : "Häufig gestellte Fragen (FAQ)")
+            </h2>
+            <p class="mt-3 text-slate-500 text-sm">
+                @(isEn ? "Answers to common questions regarding vehicle care and appointments." : "Wissenswertes rund um unsere Dienstleistungen und Terminvergabe.")
+            </p>
+        </div>
+
+        <div class="space-y-4">
+            @foreach (var faq in Model.TopFaqs)
+            {
+                var q = isEn ? faq.QuestionEn : faq.QuestionDe;
+                var a = isEn ? faq.AnswerEn : faq.AnswerDe;
+
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80">
+                    <h3 class="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        @q
+                    </h3>
+                    <p class="text-sm text-slate-600 leading-relaxed pl-7">
+                        @a
+                    </p>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="/@Model.CurrentCulture/faq" class="text-sm font-bold text-brand-600 hover:underline">
+                @(isEn ? "View all questions & answers &rarr;" : "Alle Fragen & Antworten anzeigen &rarr;")
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call To Action -->
+<section class="py-16 bg-navy-900 text-white text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-extrabold mb-4">
+            @(isEn ? "Ready to give your car a brand-new shine?" : "Bereit für neuen Glanz an Ihrem Fahrzeug?")
+        </h2>
+        <p class="text-slate-300 text-base max-w-2xl mx-auto mb-8">
+            @(isEn ? "Contact us today to schedule your personalized detailing session in Berlin." : "Kontaktieren Sie uns jetzt für ein unverbindliches Angebot oder eine persönliche Beratung in Berlin.")
+        </p>
+        <a href="/@Model.CurrentCulture/contact" class="inline-flex px-8 py-4 rounded-xl font-bold bg-brand-600 hover:bg-brand-500 text-white shadow-xl shadow-brand-600/30 transition-all text-base">
+            @(isEn ? "Get In Touch With Us" : "Jetzt Kontakt aufnehmen")
+        </a>
     </div>
 </section>

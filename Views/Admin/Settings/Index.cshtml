@@ -1,0 +1,145 @@
+@model CarWashWebsite.ViewModels.Admin.SiteSettingsFormViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Site Settings & Branding";
+}
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Studio Settings &amp; Branding</h2>
+            <p class="text-slate-500 text-sm mt-1">Configure workshop contact info, social links, branding assets, and languages.</p>
+        </div>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Settings" asp-action="Index" method="post" enctype="multipart/form-data" class="space-y-8">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 text-red-700 text-sm border border-red-200"></div>
+
+        <!-- 1. Contact & Studio Info -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span>Studio Contact Information</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="BusinessNameDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BusinessNameDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="BusinessNameEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="BusinessNameEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="Phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="Phone" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="Email" class="input-field" type="email" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="AddressDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="AddressDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="AddressEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="AddressEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="OpeningHoursDe" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="OpeningHoursDe" class="input-field" required />
+                </div>
+                <div>
+                    <label asp-for="OpeningHoursEn" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="OpeningHoursEn" class="input-field" required />
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="GoogleMapsEmbed" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Google Maps Embed URL (optional)</label>
+                <input asp-for="GoogleMapsEmbed" class="input-field" placeholder="https://www.google.com/maps/embed?..." />
+            </div>
+        </div>
+
+        <!-- 2. Social Links -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                <span>Social Links &amp; Channels</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                    <label asp-for="InstagramUrl" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="InstagramUrl" class="input-field" placeholder="https://instagram.com/..." />
+                </div>
+                <div>
+                    <label asp-for="FacebookUrl" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="FacebookUrl" class="input-field" placeholder="https://facebook.com/..." />
+                </div>
+                <div>
+                    <label asp-for="WhatsAppUrl" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <input asp-for="WhatsAppUrl" class="input-field" placeholder="+49 170 1234567" />
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Branding & Localization -->
+        <div class="card shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                <span>Branding &amp; Languages</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="LogoFile" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Upload Studio Logo</label>
+                    <input asp-for="LogoFile" type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:bg-slate-100 file:text-slate-700 cursor-pointer" />
+                    @if (!string.IsNullOrEmpty(Model.LogoPath))
+                    {
+                        <div class="mt-2 text-xs text-slate-500">Current logo: <a href="@Model.LogoPath" target="_blank" class="text-brand-600 underline">View</a></div>
+                    }
+                </div>
+                <div>
+                    <label asp-for="FaviconFile" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Upload Favicon (.ico, .png)</label>
+                    <input asp-for="FaviconFile" type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:bg-slate-100 file:text-slate-700 cursor-pointer" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                    <label asp-for="DefaultCulture" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"></label>
+                    <select asp-for="DefaultCulture" class="input-field">
+                        <option value="de">German (Deutsch - Default)</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="flex items-center pt-6">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input asp-for="EnableEnglish" type="checkbox" class="w-5 h-5 rounded text-brand-600 focus:ring-brand-500" />
+                        <span class="text-sm font-semibold text-slate-700">Enable English language translation</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Bar -->
+        <div class="flex items-center justify-end gap-4">
+            <button type="submit" class="btn-primary !px-8 !py-3">
+                Save All Settings
+            </button>
+        </div>
+    </form>
+</div>

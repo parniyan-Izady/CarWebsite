@@ -1,0 +1,89 @@
+﻿@using CarWashWebsite.Data.Entities
+@model IEnumerable<CarWashWebsite.Data.Entities.Service>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Services & Pricing Management";
+}
+
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div>
+        <p class="text-sm text-slate-500">Manage your business services, pricing types, multilingual content, and SEO.</p>
+    </div>
+    <a href="/Admin/Services/Create" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-md shadow-brand-600/20 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Add New Service
+    </a>
+</div>
+
+<!-- Table Card -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <tr>
+                    <th class="py-3.5 px-6">Service Title (DE / EN)</th>
+                    <th class="py-3.5 px-6">Price</th>
+                    <th class="py-3.5 px-6">Type</th>
+                    <th class="py-3.5 px-6">Order</th>
+                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-normal">
+                @foreach (var s in Model)
+                {
+                    <tr class="hover:bg-slate-50/70 transition-colors">
+                        <td class="py-4 px-6">
+                            <div class="font-bold text-slate-900">@s.TitleDe</div>
+                            <div class="text-xs text-slate-500">@s.TitleEn</div>
+                        </td>
+                        <td class="py-4 px-6 font-semibold text-slate-900">
+                            @if (s.PriceType == PriceType.OnRequest)
+                            {
+                                <span class="text-slate-500 italic">On Request</span>
+                            }
+                            else if (s.PriceType == PriceType.StartingFrom)
+                            {
+                                <span>ab €@(s.Price?.ToString("N2") ?? "0.00")</span>
+                            }
+                            else
+                            {
+                                <span>€@(s.Price?.ToString("N2") ?? "0.00")</span>
+                            }
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="inline-flex px-2 py-0.5 text-xs font-medium rounded-md bg-slate-100 text-slate-700">
+                                @s.PriceType
+                            </span>
+                        </td>
+                        <td class="py-4 px-6 text-slate-500 font-mono text-xs">
+                            @s.DisplayOrder
+                        </td>
+                        <td class="py-4 px-6">
+                            <form asp-area="Admin" asp-controller="Services" asp-action="ToggleStatus" asp-route-id="@s.Id" method="post" class="inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer @(s.IsActive ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100" : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200") transition-colors">
+                                    <span class="w-1.5 h-1.5 rounded-full @(s.IsActive ? "bg-emerald-500" : "bg-slate-400")"></span>
+                                    @(s.IsActive ? "Active" : "Inactive")
+                                </button>
+                            </form>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="/Admin/Services/Edit/@s.Id" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-white hover:bg-brand-600 bg-slate-100 transition-colors">
+                                    Edit
+                                </a>
+                                <form asp-area="Admin" asp-controller="Services" asp-action="Delete" asp-route-id="@s.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this service?');" class="inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

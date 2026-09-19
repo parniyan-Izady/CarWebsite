@@ -1,0 +1,84 @@
+@{
+    var culture = (string?)ViewData["CurrentCulture"] ?? "de";
+    var isEn = culture.Equals("en", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = isEn ? "About Berlin Car Care - Craftsmanship & Passion" : "Über uns - Leidenschaft für Fahrzeugpflege in Berlin";
+}
+
+<!-- Hero Band -->
+<section class="bg-navy-900 text-white py-16 lg:py-20 border-b border-navy-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-800 text-brand-400 text-xs font-semibold uppercase tracking-wider mb-4 border border-navy-700">
+                @(isEn ? "Berlin Detailing Studio" : "Berliner Detailing Studio")
+            </span>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+                @(isEn ? "About Berlin Car Care" : "Über Berlin Car Care")
+            </h1>
+            <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+                @(isEn ? "Committed to delivering peerless automotive cosmetics and detailing in Berlin." : "Ihre verlässlichen Partner für meisterhafte Fahrzeugpflege und Werterhalt.")
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 lg:py-24 bg-slate-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <!-- Introduction -->
+        <div class="card space-y-4">
+            <h2 class="section-heading !text-2xl sm:!text-3xl">@(isEn ? "Our Commitment to Quality" : "Unser Qualitätsversprechen")</h2>
+            <p class="text-slate-600 leading-relaxed text-base sm:text-lg">
+                @(isEn
+                    ? "Located in Berlin, Berlin Car Care was founded with a singular mission: to provide vehicle owners with a standard of cleanliness, paint correction, and protection that goes far beyond ordinary car washes."
+                    : "Berlin Car Care steht für kompromisslose Qualität bei der Fahrzeugreinigung und Lackveredelung. Unser Betrieb in Berlin bietet privaten Fahrzeughaltern sowie anspruchsvollen Sammlern ein Aufbereitungsniveau, das weit über herkömmliche Autowaschanlagen hinausgeht.")
+            </p>
+        </div>
+
+        <!-- 2-Column Feature Cards on md+ -->
+        <div>
+            <h3 class="text-xl font-bold text-slate-900 mb-6">@(isEn ? "Why We Are Different" : "Unsere Qualitätskriterien")</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div class="card hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4 font-bold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">@(isEn ? "Modern Equipment" : "Modernste Technologie")</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            @(isEn ? "We utilize commercial extraction cleaners, temperature-controlled steam machines, and high-precision paint depth gauges." : "Wir setzen auf industrielle Sprühextraktionsgeräte, Heißdampf und präzise Lackschichtenmessung.")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4 font-bold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">@(isEn ? "Certified Materials" : "Zertifizierte Pflegeprodukte")</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            @(isEn ? "Only pH-neutral, environmentally conscious shampoos and premier German/Swiss waxes are applied to your paint." : "Ausschließlich pH-neutrale Reiniger und Spitzenwachse schonen Materialien und Umwelt nachhaltig.")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dark CTA Band -->
+        <div class="rounded-2xl bg-navy-950 p-8 sm:p-10 border border-navy-800 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+            <div class="space-y-1 text-center sm:text-left">
+                <h3 class="text-xl sm:text-2xl font-bold text-white">@(isEn ? "Have a question or custom request?" : "Haben Sie Fragen oder spezielle Wünsche?")</h3>
+                <p class="text-slate-400 text-sm">@(isEn ? "Visit our studio or drop us a message anytime." : "Besuchen Sie uns am Kurfürstendamm oder schreiben Sie uns direkt.")</p>
+            </div>
+            <a href="/@culture/contact" class="btn-primary w-full sm:w-auto shrink-0 flex items-center justify-center gap-2">
+                <span>@(isEn ? "Contact Us" : "Kontakt aufnehmen")</span>
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+</section>

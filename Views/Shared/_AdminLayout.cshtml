@@ -1,0 +1,195 @@
+@inject CarWashWebsite.Data.ApplicationDbContext DbContext
+@{
+    int unreadMessagesCount = 0;
+    try
+    {
+        unreadMessagesCount = DbContext.ContactMessages.Count(m => !m.IsRead && !m.IsArchived);
+    }
+    catch { }
+    var path = Context.Request.Path.Value?.ToLowerInvariant() ?? "";
+}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Portal | Berlin Car Care</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- CKEditor 5 Classic Build -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 220px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased text-slate-800">
+    <div class="min-h-full flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-navy-900 text-slate-300 flex flex-col justify-between shrink-0 shadow-xl border-r border-navy-800">
+            <div>
+                <!-- Brand Header -->
+                <div class="h-16 flex items-center justify-between px-6 bg-navy-950 border-b border-navy-800">
+                    <a href="/Admin/Dashboard" class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-brand-600/30">
+                            BC
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm tracking-wide">BERLIN CAR CARE</div>
+                            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Administration</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="p-3 space-y-1 text-sm font-medium overflow-y-auto max-h-[calc(100vh-140px)]">
+                    <!-- 1. Dashboard -->
+                    <a href="/Admin/Dashboard" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path == "/admin/dashboard" || path == "/admin" ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <!-- 2. Services & Pricing -->
+                    <a href="/Admin/Services" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/services") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                        <span>Services &amp; Pricing</span>
+                    </a>
+
+                    <!-- 3. Messages -->
+                    <a href="/Admin/Messages" class="flex items-center justify-between px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/messages") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span>Messages</span>
+                        </div>
+                        @if (unreadMessagesCount > 0)
+                        {
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-brand-500 text-white">@unreadMessagesCount</span>
+                        }
+                    </a>
+
+                    <!-- 4. Before & After Gallery -->
+                    <a href="/Admin/Gallery" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/gallery") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <span>Gallery Items</span>
+                    </a>
+
+                    <!-- 5. FAQ Items -->
+                    <a href="/Admin/Faqs" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/faqs") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>FAQ Items</span>
+                    </a>
+
+                    <!-- 6. Pages Content -->
+                    <a href="/Admin/Pages" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/pages") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                        <span>Page Content</span>
+                    </a>
+
+                    <!-- 7. Media Library -->
+                    <a href="/Admin/Media" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/media") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                        <span>Media Library</span>
+                    </a>
+
+                    <!-- 8. SEO Metadata -->
+                    <a href="/Admin/Seo" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/seo") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <span>SEO Metadata</span>
+                    </a>
+
+                    <!-- 9. Site Settings -->
+                    <a href="/Admin/Settings" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors @(path.StartsWith("/admin/settings") ? "bg-brand-600 text-white font-semibold" : "text-slate-300 hover:bg-navy-800 hover:text-white")">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Site Settings</span>
+                    </a>
+
+                    <div class="pt-3 pb-1">
+                        <div class="text-[11px] uppercase tracking-wider text-slate-500 font-bold px-3">External</div>
+                    </div>
+
+                    <!-- Live Website -->
+                    <a href="/" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-navy-800 hover:text-white transition-colors">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        <span>View Live Website</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- User Footer with Change Password & Logout -->
+            <div class="p-4 bg-navy-950 border-t border-navy-800 space-y-2">
+                <div class="flex items-center justify-between">
+                    <a href="/Admin/Account/ChangePassword" class="flex items-center gap-2.5 overflow-hidden group">
+                        <div class="w-8 h-8 rounded-full bg-slate-700 group-hover:bg-brand-600 flex items-center justify-center text-xs font-bold text-white shrink-0 transition-colors">
+                            A
+                        </div>
+                        <div class="truncate text-xs">
+                            <div class="font-semibold text-white group-hover:text-brand-300 transition-colors truncate">Administrator</div>
+                            <div class="text-slate-400 text-[11px] truncate">Change Password</div>
+                        </div>
+                    </a>
+                    <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post" class="inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" title="Logout" class="p-1.5 text-slate-400 hover:text-red-400 rounded-lg hover:bg-navy-800 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Body -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-100">
+            <!-- Top Header -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-lg font-bold text-slate-900">@ViewData["Title"]</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Admin System Active
+                    </span>
+                </div>
+            </header>
+
+            <!-- Main Workspace Container -->
+            <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3 shadow-sm">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span class="font-medium">@TempData["SuccessMessage"]</span>
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm flex items-center gap-3 shadow-sm">
+                        <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <span class="font-medium">@TempData["ErrorMessage"]</span>
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!-- Auto-initialize CKEditor 5 on any textarea with class .ckeditor -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('textarea.ckeditor').forEach(function(textarea) {
+                ClassicEditor.create(textarea, {
+                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+                }).catch(function(error) {
+                    console.error(error);
+                });
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

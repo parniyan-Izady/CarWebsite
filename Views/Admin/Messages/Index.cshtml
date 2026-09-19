@@ -1,0 +1,110 @@
+@model CarWashWebsite.ViewModels.Admin.MessagesIndexViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Contact Inquiries & Messages";
+}
+
+<div class="space-y-6">
+    <!-- Header & Tabs -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Customer Messages</h2>
+            <p class="text-slate-500 text-sm mt-1">Inquiries submitted through the website contact form.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex items-center bg-white p-1 rounded-xl border border-slate-200 shadow-sm text-sm font-semibold">
+            <a href="/Admin/Messages?tab=new" class="px-4 py-2 rounded-lg transition-colors flex items-center gap-2 @(Model.CurrentTab == "new" ? "bg-brand-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50")">
+                <span>New</span>
+                @if (Model.NewCount > 0)
+                {
+                    <span class="px-2 py-0.5 rounded-full text-xs @(Model.CurrentTab == "new" ? "bg-brand-700 text-white" : "bg-brand-100 text-brand-700")">@Model.NewCount</span>
+                }
+            </a>
+            <a href="/Admin/Messages?tab=read" class="px-4 py-2 rounded-lg transition-colors flex items-center gap-2 @(Model.CurrentTab == "read" ? "bg-brand-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50")">
+                <span>Read</span>
+                <span class="px-2 py-0.5 rounded-full text-xs @(Model.CurrentTab == "read" ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-600")">@Model.ReadCount</span>
+            </a>
+            <a href="/Admin/Messages?tab=archived" class="px-4 py-2 rounded-lg transition-colors flex items-center gap-2 @(Model.CurrentTab == "archived" ? "bg-brand-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50")">
+                <span>Archived</span>
+                <span class="px-2 py-0.5 rounded-full text-xs @(Model.CurrentTab == "archived" ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-600")">@Model.ArchivedCount</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages Table -->
+    @if (!Model.Messages.Any())
+    {
+        <div class="card text-center !py-16">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800">No messages in this tab</h3>
+            <p class="text-slate-500 text-sm mt-1">When customers submit the contact form, their inquiries will appear here.</p>
+        </div>
+    }
+    else
+    {
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-4">Sender</th>
+                            <th class="px-6 py-4">Subject</th>
+                            <th class="px-6 py-4">Received</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach (var msg in Model.Messages)
+                        {
+                            <tr class="hover:bg-slate-50/80 transition-colors @(!msg.IsRead ? "bg-blue-50/30 font-semibold" : "")">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        @if (!msg.IsRead)
+                                        {
+                                            <span class="w-2.5 h-2.5 rounded-full bg-brand-600 shrink-0" title="Unread"></span>
+                                        }
+                                        <div>
+                                            <div class="text-slate-900 font-bold">@msg.Name</div>
+                                            <div class="text-xs text-slate-500 font-normal">@msg.Email @(string.IsNullOrEmpty(msg.Phone) ? "" : $"• {msg.Phone}")</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-slate-900 font-medium truncate max-w-xs sm:max-w-md">@msg.Subject</div>
+                                    <div class="text-xs text-slate-500 font-normal truncate max-w-xs sm:max-w-md">@msg.Message</div>
+                                </td>
+                                <td class="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">
+                                    @msg.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="/Admin/Messages/Details/@msg.Id" class="px-3 py-1.5 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold transition-colors">
+                                            View Details
+                                        </a>
+
+                                        <form asp-area="Admin" asp-controller="Messages" asp-action="ToggleArchive" asp-route-id="@msg.Id" asp-route-returnTab="@Model.CurrentTab" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors" title="@(msg.IsArchived ? "Unarchive" : "Archive")">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                                            </button>
+                                        </form>
+
+                                        <form asp-area="Admin" asp-controller="Messages" asp-action="Delete" asp-route-id="@msg.Id" asp-route-returnTab="@Model.CurrentTab" method="post" onsubmit="return confirm('Are you sure you want to permanently delete this message?');" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

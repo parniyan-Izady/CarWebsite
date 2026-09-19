@@ -223,5 +223,6 @@ E:\asp\carwash\obj\Debug\net10.0\refint\CarWashWebsite.dll
 E:\asp\carwash\obj\Debug\net10.0\CarWashWebsite.pdb
 E:\asp\carwash\obj\Debug\net10.0\CarWashWebsite.genruntimeconfig.cache
 E:\asp\carwash\obj\Debug\net10.0\ref\CarWashWebsite.dll
-E:\asp\carwash\obj\Debug\net10.0\compressed\7abq2632r1-{0}-y8f53befnq-y8f53befnq.gz
-E:\asp\carwash\obj\Debug\net10.0\compressed\iy8iil5asl-{0}-wczbo4cybx-wczbo4cybx.gz
+E:\asp\carwash\obj\Debug\net10.0\CarWashWebsite.sourcelink.json
+E:\asp\carwash\obj\Debug\net10.0\compressed\7abq2632r1-{0}-1b7jewrizl-1b7jewrizl.gz
+E:\asp\carwash\obj\Debug\net10.0\compressed\iy8iil5asl-{0}-q0upcfugxs-q0upcfugxs.gz
